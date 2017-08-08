@@ -33,4 +33,4 @@ $ v9 [options]
   Examples:
 
     $ v9 -i magnet:?xt=urn:btih:xxx
-    $ v9 -i D:\home\v9\video.torrent -d D:\home\v9
+    $ v9 -i D:\v9\test.torrent -d D:\v9
