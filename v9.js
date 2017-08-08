@@ -105,7 +105,7 @@ client.add(torrentId, function (torrent) {
             }
             console.log("")
             logger.info("All Finished! ")
-            logger.info("Please check the output DIR to see the screenshots. Bye!")
+            logger.info("Please check the output directory '" + outputDir + "' to see the screenshots. Bye!")
             server.close()
             client.destroy()
         })
