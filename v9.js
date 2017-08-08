@@ -46,6 +46,7 @@ client.add(torrentId, function (torrent) {
     logger.info("Torrent checked OK...")
     var exists_media = false;
     var files = [];
+	var total = 0;
     for (key in torrent.files) {
         filename = torrent.files[key].name;
         suffix = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
@@ -57,6 +58,7 @@ client.add(torrentId, function (torrent) {
                 "suffix": suffix,
                 "key": key
             })
+			total += 9;
         }
     }
     if (!exists_media) {
@@ -87,7 +89,7 @@ client.add(torrentId, function (torrent) {
                     }
                     async_map(cmds, function (cmd, callback) {
                         exec(cmd, function (err, stdout, stderr) {
-                            logger.info("Got " + mapkey++ + " screenshot, continue...")
+                            logger.info("Got " + mapkey++ + " screenshot, total is " + total + ", continue...")
                             callback(err, stdout)
                         })
                     }, function (err, results) {
@@ -104,7 +106,7 @@ client.add(torrentId, function (torrent) {
                 logger.error(err)
             }
             console.log("")
-            logger.info("All Finished! ")
+            logger.info("Finished capture " + total + " screenshot! ")
             logger.info("Please check the output directory '" + outputDir + "' to see the screenshots. Bye!")
             server.close()
             client.destroy()

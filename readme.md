@@ -1,6 +1,8 @@
 # v9 
 
-Capture the nine picture for video throught the torrent or magnetURI, without download.
+Capture the nine screenshots for video throught the torrent or magnetURI, without download.
+
+"再也不怕下载到葫芦娃了"
 
 ## Prerequisites
 
