@@ -1,0 +1,18 @@
+{
+  "name": "v9",
+  "version": "1.0.2",
+  "description": "Capture the nine picture for video in the torrent, without download.",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/zhenzhong/v9.git"
+  },
+  "author": "zhenzhong",
+  "license": "ISC",
+  "dependencies": {
+    "webtorrent": "^0.98.19",
+    "ffbinaries": "^1.0.2",
+    "promptly": "^2.2.0",
+    "commander": "^2.11.0"
+  }
+}
