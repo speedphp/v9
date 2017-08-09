@@ -16,31 +16,35 @@ var logger = require('tracer').console({
 });
 program
     .version(require('./package.json').version)
-    .option('-i, --infile <string>', 'Must be a torrent file location or a magnetURI')
-    .option('-d, --dir <string>', 'The output directory', process.cwd());
+    .description(require('./package.json').description)
+    .option('-d, --dir <string>', 'The output directory', process.cwd())
+    .arguments('<magnetURI>')
+    .action(function (magnetURI) {
+        infile = magnetURI
+    });
+
 program.on('--help', function () {
     console.log('');
     console.log('  Examples:');
     console.log('');
-    console.log('    $ v9 -i magnet:?xt=urn:btih:xxx');
-    console.log('    $ v9 -i ' + process.cwd() + path.sep + 'video.torrent -d ' + process.cwd());
+    console.log('    $ v9 magnet:?xt=urn:btih:xxx');
+    console.log('    $ v9 -d ' + process.cwd() + ' magnet:?xt=urn:btih:xxx');
+    console.log('    $ v9 ' + process.cwd() + path.sep + 'video.torrent');
 });
 program.parse(process.argv);
-if (!program.infile) {
-    program.outputHelp();
-    process.exit();
-}
+
+if (typeof infile === 'undefined') program.help();
+
 var torrentId;
 var outputDir = program.dir;
-if( 0 === program.infile.indexOf("magnet")){
-    torrentId = program.infile
+if( 0 === infile.indexOf("magnet")){
+    torrentId = infile
 }else{
-    torrentId = path.resolve(program.infile)
+    torrentId = path.resolve(infile)
 }
-process.stdout.write('\033c');
+
 logger.info("Starting, please wait...")
 client.add(torrentId, function (torrent) {
-    process.stdout.write('\033c');
     var server = torrent.createServer()
     server.listen(3003)
     logger.info("Torrent checked OK...")

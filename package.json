@@ -1,7 +1,7 @@
 {
   "name": "v9",
-  "version": "1.0.5",
-  "description": "Capture the nine screenshots for video in the torrent, without download.",
+  "version": "1.0.6",
+  "description": "Capture the nine screenshots for video in the magnetURI or torrent, without download.",
   "main": "main.js",
   "repository": {
     "type": "git",

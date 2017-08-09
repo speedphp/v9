@@ -22,17 +22,19 @@ v9 must be installed on -g, by globals.
 
 ##   Usage: 
 ```
-$ v9 [options]
+$ v9 [options] <magnetURI>
 ```
+
+  Capture the nine screenshots for video in the magnetURI or torrent, without download.
 
   Options:
 
-    -V, --version          output the version number
-    -i, --infile <string>  Must be a torrent file location or a magnetURI
-    -d, --dir <string>     The output directory
-    -h, --help             output usage information
+    -V, --version       output the version number
+    -d, --dir <string>  The output directory
+    -h, --help          output usage information
 
   Examples:
 
-    $ v9 -i magnet:?xt=urn:btih:xxx
-    $ v9 -i D:\v9\test.torrent -d D:\v9
+    $ v9 magnet:?xt=urn:btih:xxx
+    $ v9 -d D:\output magnet:?xt=urn:btih:xxx
+    $ v9 D:\v9\video.torrent
