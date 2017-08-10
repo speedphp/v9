@@ -5,7 +5,7 @@ var WebTorrent = require("webtorrent")
 var program = require('commander');
 var path = require("path");
 var client = new WebTorrent()
-var filter = ["mp4", "rm", "rmvb", "avi", "mkv"]
+var filter = ["mp4", "rm", "rmvb", "avi", "mkv", "wmv"]
 var mapkey = 1;
 var logger = require('tracer').console({
     format: "[{{title}}] {{timestamp}} {{message}}",
@@ -48,15 +48,22 @@ client.add(torrentId, function (torrent) {
     var server = torrent.createServer()
     server.listen(3003)
     logger.info("Torrent checked OK...")
+    process.on('SIGINT', function () {
+        console.log('Got a SIGINT. Ready to exit, Bye!');
+        server.close();
+        client.destroy();
+        process.exit(0);
+    });
+
     var exists_media = false;
     var files = [];
 	var total = 0;
-    for (key in torrent.files) {
-        filename = torrent.files[key].name;
-        suffix = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
+    for (var key in torrent.files) {
+        var filename = torrent.files[key].name;
+        var suffix = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
         if (filter.indexOf(suffix) != -1) {
             exists_media = true;
-            logger.info("Found media:" + filename)
+            logger.info("Found media: " + (torrent.files[key].length / 1024 /1024).toFixed(2) + "MB; " + filename)
             files.push({
                 "filename": filename,
                 "suffix": suffix,
@@ -73,22 +80,22 @@ client.add(torrentId, function (torrent) {
         var async_map = require("async/map");
         async_map(files, function (file, callback) {
             var url = "http://127.0.0.1:3003/" + file.key + "/" + encodeURIComponent(file.filename)
-            ffprobe_cmd = "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " + url
+            var ffprobe_cmd = "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " + url
             const exec = require('child_process').exec;
-            (function (filename, key, suffix, url) {
+            (function (ffprobe_cmd, filename, key, suffix, url) {
                 exec(ffprobe_cmd, function (err, stdout, stderr) {
                     if (err) {
                         logger.error(err);
                         return;
                     }
-                    duration = parseInt(stdout)
-                    step = (parseInt(duration) - 20) / 8;
+                    var duration = parseInt(stdout)
+                    var step = (parseInt(duration) - 20) / 8;
                     var cmds = [];
                     for (var i = 5; i < duration; i += step) {
                         i = parseInt(i)
-                        btime = formatTime(i)
-                        filepath = outputDir + path.sep + (1 + parseInt(key)) + "-" + suffix + "-" + btime + ".jpg"
-                        ffmpeg_cmd = 'ffmpeg -ss ' + i + ' -i "' + url + '" -t 10 -filter_complex "select=eq(pict_type\\,I)[out];[out]scale=-2:360" -f image2 -vframes 1 -an -y ' + filepath
+                        var btime = formatTime(i)
+                        var filepath = outputDir + path.sep + (1 + parseInt(key)) + "-" + suffix + "-" + btime + ".jpg"
+                        var ffmpeg_cmd = 'ffmpeg -ss ' + i + ' -i "' + url + '" -t 10 -filter_complex "select=eq(pict_type\\,I)[out];[out]scale=-2:360" -f image2 -vframes 1 -an -y ' + filepath
                         cmds.push(ffmpeg_cmd)
                     }
                     async_map(cmds, function (cmd, callback) {
@@ -104,7 +111,7 @@ client.add(torrentId, function (torrent) {
                         callback(err, results)
                     });
                 });
-            })(file.filename, file.key, file.suffix, url);
+            })(ffprobe_cmd, file.filename, file.key, file.suffix, url);
         }, function (err, results) {
             if (err) {
                 logger.error(err)
