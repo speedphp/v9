@@ -1,12 +1,13 @@
 {
   "name": "v9",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Capture the nine screenshots for video in the magnetURI or torrent, without download.",
   "main": "main.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/zhenzhong/v9.git"
   },
+  "keywords": ["screenshot", "bittorrent", "bittorrent client", "download", "mad science", "p2p", "peer-to-peer", "peers", "streaming", "swarm", "torrent", "web torrent", "webrtc", "webrtc data", "webtorrent"],
   "author": "zhenzhong",
   "license": "ISC",
   "bin": {
