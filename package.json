@@ -1,20 +1,20 @@
 {
   "name": "v9",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Capture the nine screenshots for video in the magnetURI or torrent, without download.",
   "main": "main.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zhenzhong/v9.git"
+    "url": "https://github.com/speedphp/v9.git"
   },
   "keywords": ["screenshot", "bittorrent", "bittorrent client", "download", "mad science", "p2p", "peer-to-peer", "peers", "streaming", "swarm", "torrent", "web torrent", "webrtc", "webrtc data", "webtorrent"],
-  "author": "zhenzhong",
+  "author": "speedphp",
   "license": "ISC",
   "bin": {
     "v9": "./v9.js"
   },
   "dependencies": {
-    "webtorrent": "^0.98.19",
+    "webtorrent": ">=0.107.6",
     "async": "^2.5.0",
     "tracer": "^0.8.9",
     "commander": "^2.11.0"
