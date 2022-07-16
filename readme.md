@@ -8,6 +8,7 @@ Capture the nine screenshots for video throught the torrent or magnetURI, withou
 
 ~~v9 base on the ffmpeg, so you must install ffmpeg on your machine.~~
 ~~AND the PATH must be set for the ffmpeg and ffprobe.~~
+
 Now there is no need to install ffmpeg first, v9 uses ```ffmpeg-installer``` and ```ffprobe-installer``` to setup these commands, no further installation work required.
 
 ## How to install
