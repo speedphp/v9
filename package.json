@@ -1,6 +1,6 @@
 {
   "name": "v9",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "description": "Capture the nine screenshots for video in the magnetURI or torrent, without download.",
   "main": "v9.js",
   "repository": {
