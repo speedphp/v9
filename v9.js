@@ -30,9 +30,9 @@ program.on('--help', function () {
     console.log('');
     console.log('  Examples:');
     console.log('');
-    console.log('    $ v9 magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c');
-    console.log('    $ v9 -d ' + process.cwd() + ' magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c');
-    console.log('    $ v9 ' + process.cwd() + path.sep + '/free_torrents/sintel.torrent');
+    console.log("    $ v9 'magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c'");
+    console.log('    $ v9 -d ' + process.cwd() + "'magnet:?xt=urn:btih:209c8226b299b308beaf2b9cd3fb49212dbd13ec'");
+    console.log('    $ v9 ' + process.cwd() + path.sep + 'free_torrents' + path.sep + 'sintel.torrent');
 });
 program.parse(process.argv);
 
