@@ -4,6 +4,9 @@ require('events').EventEmitter.defaultMaxListeners = 0;
 var WebTorrent = require("webtorrent")
 var program = require('commander');
 var path = require("path");
+var ffprobeInstaller = require('@ffprobe-installer/ffprobe');
+var ffmpegInstaller = require('@ffmpeg-installer/ffmpeg');
+
 var client = new WebTorrent()
 var filter = ["mp4", "rm", "rmvb", "avi", "mkv", "wmv"]
 var mapkey = 1;
@@ -27,16 +30,16 @@ program.on('--help', function () {
     console.log('');
     console.log('  Examples:');
     console.log('');
-    console.log('    $ v9 magnet:?xt=urn:btih:xxx');
-    console.log('    $ v9 -d ' + process.cwd() + ' magnet:?xt=urn:btih:xxx');
-    console.log('    $ v9 ' + process.cwd() + path.sep + 'video.torrent');
+    console.log('    $ v9 magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c');
+    console.log('    $ v9 -d ' + process.cwd() + ' magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c');
+    console.log('    $ v9 ' + process.cwd() + path.sep + '/free_torrents/sintel.torrent');
 });
 program.parse(process.argv);
 
 if (typeof infile === 'undefined') program.help();
 
 var torrentId;
-var outputDir = program.dir;
+var outputDir = program.opts().dir;
 if( 0 === infile.indexOf("magnet")){
     torrentId = infile
 }else{
@@ -80,7 +83,7 @@ client.add(torrentId, function (torrent) {
         var async_map = require("async/map");
         async_map(files, function (file, callback) {
             var url = "http://127.0.0.1:3003/" + file.key + "/" + encodeURIComponent(file.filename)
-            var ffprobe_cmd = "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " + url
+            var ffprobe_cmd = ffprobeInstaller.path + " -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " + url
             const exec = require('child_process').exec;
             (function (ffprobe_cmd, filename, key, suffix, url) {
                 exec(ffprobe_cmd, function (err, stdout, stderr) {
@@ -95,7 +98,7 @@ client.add(torrentId, function (torrent) {
                         i = parseInt(i)
                         var btime = formatTime(i)
                         var filepath = outputDir + path.sep + (1 + parseInt(key)) + "-" + suffix + "-" + btime + ".jpg"
-                        var ffmpeg_cmd = 'ffmpeg -ss ' + i + ' -i "' + url + '" -t 10 -filter_complex "select=eq(pict_type\\,I)[out];[out]scale=-2:360" -f image2 -vframes 1 -an -y ' + filepath
+                        var ffmpeg_cmd = ffmpegInstaller.path + ' -ss ' + i + ' -i "' + url + '" -t 10 -filter_complex "select=eq(pict_type\\,I)[out];[out]scale=-2:360" -f image2 -vframes 1 -an -y ' + filepath
                         cmds.push(ffmpeg_cmd)
                     }
                     async_map(cmds, function (cmd, callback) {
